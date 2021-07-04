@@ -20,5 +20,6 @@ def main():
     rdd.collect()
     print(f"""\n Printing a line from {appName}""")
 
+
 if __name__ == "__main__":
   main()
