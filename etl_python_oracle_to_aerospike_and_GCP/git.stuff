@@ -1,0 +1,48 @@
+git show --pretty="" --name-only
+
+
+git clone https://michTalebzadeh:London99##@github.com/michTalebzadeh/tests
+
+git remote add origin git@github.com:michTalebzadeh/wfmWithAirflow/etl_python_oracle_to_aerospike_and_GCP
+git remote set-url origin git@github.com:michTalebzadeh/tests
+
+git commit -m "First commit"
+git remote -v
+git push -u origin master # pushes changes to origin
+git push
+
+git log --diff-filter=D --summary .
+
+
+ git log --diff-filter=D --summary
+commit 7606ba060f914c293a5643bfd72bec7ff51e841f
+Author: Dr Mich Talebzadeh <mich.talebzadeh@gmail.com>
+Date:   Sun Dec 8 19:19:27 2019 +0000
+
+    Delete variables.py
+
+ delete mode 100755 variables.py
+
+commit 77d2bebcbc70430c7f0e4b2654cf5e74edb59eb8
+Author: Dr Mich Talebzadeh <mich.talebzadeh@gmail.com>
+Date:   Sun Dec 8 19:19:14 2019 +0000
+
+    Delete configs.py
+
+ delete mode 100755 configs.py
+
+commit 30e406d453c0f0ea0f9055c6392fb9dd0102f81f
+Author: Dr Mich Talebzadeh <mich.talebzadeh@gmail.com>
+Date:   Sun Dec 8 19:19:05 2019 +0000
+
+    Delete __init__.py
+
+ delete mode 100755 __init__.py
+
+
+git show 7606ba060f914c293a5643bfd72bec7ff51e841f
+git checkout 7606ba060f914c293a5643bfd72bec7ff51e841f
+
+git commit -m "minor change" etl_python_oracle_to_aerospike_and_GCP.py
+
+git remote add origin git@github.com:michTalebzadeh/wfmWithAirflow/dags

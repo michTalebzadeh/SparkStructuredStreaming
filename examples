@@ -1,0 +1,2 @@
+spark-submit --conf spark.sql.catalogImplementation=hive dynamic_ARRAY_generator_parquet.py
+

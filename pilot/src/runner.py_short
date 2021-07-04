@@ -1,0 +1,43 @@
+import UsedFunctions as uf
+import findspark
+findspark.init()
+from pyspark.sql import SparkSession
+from pyspark import HiveContext
+from pyspark import SparkConf
+from pyspark import SparkContext
+import pyspark
+from pyspark.sql import SparkSession
+
+def spark_session():
+  return SparkSession.builder \
+      .master('local[1]') \
+      .appName('SparkByExamples.com') \
+      .getOrCreate()
+
+def main():
+  print('Starting....')
+  sps = spark_session()
+
+  ##global numRows
+  numRows = 10
+  #
+  ## Check if table exist otherwise create it
+
+
+
+  start = 0
+  end = start + numRows - 1
+  print ("starting at ID = ",start, ",ending on = ",end)
+  Range = range(start, end+1)
+
+  rdd = sps.sparkContext.parallelize(Range). \
+           map(lambda x: (x, uf.clustered(x,numRows), \
+                             uf.scattered(x,numRows), \
+                             uf.randomised(x, numRows), \
+                             uf.randomString(50), \
+                             uf.padSingleChar("x",4000)))
+
+  ##print(rdd.collect())
+
+if __name__ == '__main__':
+    main()
