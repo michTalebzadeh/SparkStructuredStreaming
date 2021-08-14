@@ -1,14 +1,15 @@
-from __future__ import print_function
-from config import config, hive_url
-import sys
+from pyspark import SparkConf, SparkContext
+from pyspark.sql import SparkSession
+from pyspark.sql import SQLContext
+from pyspark.sql import HiveContext
 from pyspark.sql import functions as F
 from pyspark.sql.functions import col, round
+from pyspark.sql.functions import udf, col
 from pyspark.sql.window import Window
-from pyspark.sql.functions import lag
-from sparkutils import sparkstuff as s
-from othermisc import usedFunctions as uf
-import locale
-locale.setlocale(locale.LC_ALL, 'en_GB')
+
+from DSBQ.src.configure import config, hive_url
+from DSBQ.sparkutils import sparkstuff as s
+from DSBQ.othermisc import usedFunctions as uf
 
 
 class GCP_Hive:
@@ -54,21 +55,28 @@ class GCP_Hive:
     def loadIntoBQTable(self, df2):
         # write to BigQuery table
         s.writeTableToBQ(df2,"overwrite",config['GCPVariables']['targetDataset'],config['GCPVariables']['yearlyAveragePricesAllTable'])
-        print(f"""created {config['GCPVariables']['yearlyAveragePricesAllTable']}""")
+        print(f"""\n Populated BigQuery table {config['GCPVariables']['yearlyAveragePricesAllTable']}""")
+        print("\n rows written is ",  df2.count())
+        print(f"""\n Reading from BigQuery table {config['GCPVariables']['yearlyAveragePricesAllTable']}\n""")
         # read data to ensure all loaded OK
         read_df = s.loadTableFromBQ(self.spark, config['GCPVariables']['targetDataset'], config['GCPVariables']['yearlyAveragePricesAllTable'])
+        print("\n rows read in is ",  read_df.count())
+        """ 
         # check that all rows are there
         if df2.subtract(read_df).count() == 0:
             print("Data has been loaded OK to BQ table")
         else:
             print("Data could not be loaded to BQ table, quitting")
             sys.exit(1)
+        """
 
 if __name__ == "__main__":
     appName = config['common']['appName']
     spark_session = s.spark_session(appName)
     spark_session = s.setSparkConfHive(spark_session)
     spark_session = s.setSparkConfBQ(spark_session)
+    sc = s.sparkcontext()
+    sc.setLogLevel("ERROR")
     lst = (spark_session.sql("SELECT FROM_unixtime(unix_timestamp(), 'dd/MM/yyyy HH:mm:ss.ss') ")).collect()
     print("\nStarted at");uf.println(lst)
     gcphive = GCP_Hive(spark_session)
@@ -77,4 +85,5 @@ if __name__ == "__main__":
     gcphive.loadIntoBQTable(df2)
     lst = (spark_session.sql("SELECT FROM_unixtime(unix_timestamp(), 'dd/MM/yyyy HH:mm:ss.ss') ")).collect()
     print("\nFinished at");uf.println(lst)
+    sc.stop()
 

@@ -44,7 +44,8 @@ GCPVariables:
   outputTable: targetDataset+"."+targetTable
   fullyQualifiedoutputTableId: projectId+":"+outputTable
   tmp_bucket: "tmp_storage_bucket/tmp"
-  jsonKeyFile: "/home/hduser/GCPFirstProject-d75f1b3a9817.json"
+  #jsonKeyFile: "/home/hduser/GCPFirstProject-d75f1b3a9817.json"
+  jsonKeyFile: "/home/hduser/axial-glow-224522-1a8ab25e740e.json"
   DB: "DS"
   yearlyAveragePricesAllTable: "yearlyaveragepricesAllTable"
   percentYearlyHousePriceChange: "percentyearlyhousepricechange"

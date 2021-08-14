@@ -1,18 +1,32 @@
 common:
-  appName: 'test'
+  appName: 'md'
+  newtopic: 'newtopic'
+plot_fonts:
+  font:
+    'family': 'serif'
+    'color': 'darkred'
+    'weight': 'normal'
+    'size': 10
 
-statics:
-  driver: com.mysql.cj.jdbc.Driver
-  user: scratchpad
-  password: oracle
-  dbschema: scratchpad
-  host: localhost
-  sourceTable: test_ukhouseprices
-  fetchsize: "1000"
-  yearlyAveragePricesAllTable: test_yearlyAvgPrice
-  percentYearlyHousePriceChange: "test_percentyearlyhousepricechange"
-  read_df_rows: 200
-  transformation_df_rows: 18
-  mode: overwrite
-  fetchsize: "1000"
+  # define font dictionary
+  font_small:
+    'family': 'serif'
+    'color': 'darkred'
+    'weight': 'normal'
+    'size': 7
 
+hiveVariables:
+  DSDB: DS
+  regionname: "Kensington and Chelsea"
+  Boston_csvlocation: hdfs://rhes75:9000/ds/Boston.csv
+  London_csvLocation: hdfs://rhes75:9000/ds/UK-HPI-full-file-2020-01.csv
+  hive_driver: com.cloudera.hive.jdbc41.HS2Driver
+  #hive_driver: "com.ddtek.jdbcx.hive.HiveDataSource"
+  #hive_driver: "com.ddtek.jdbc.hive.HiveDriver"
+  #hive_driver: "org.apache.hive.jdbc.HiveDriver"
+  hiveHost: rhes75
+  hivePort: "10099"
+  #hive_url: "jdbc:hive2://rhes75:10099/default;"
+  hive_user: hduser
+  hive_password: hduser
+  fetchsize: "1000"

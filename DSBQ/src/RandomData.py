@@ -1,13 +1,13 @@
 from __future__ import print_function
 import sys
-from src.config import config, oracle_url
+from DSBQ.src.configure import config, oracle_url
 from pyspark.sql import functions as F
 from pyspark.sql.functions import col, round
 from pyspark.sql.window import Window
-from sparkutils import sparkstuff as s
-from othermisc import usedFunctions as uf
-import locale
-locale.setlocale(locale.LC_ALL, 'en_GB')
+from DSBQ.sparkutils import sparkstuff as s
+from DSBQ.othermisc import usedFunctions as uf
+#import locale
+#locale.setlocale(locale.LC_ALL, 'en_GB')
 import cx_Oracle
 
 
@@ -27,6 +27,7 @@ def main():
     oracle.loadIntoOracleTableWithCursor(dfRandom)
     lst = (spark_session.sql("SELECT FROM_unixtime(unix_timestamp(), 'dd/MM/yyyy HH:mm:ss.ss') ")).collect()
     print("\nFinished at");uf.println(lst)
+    spark_session.stop()
 
 class RandomData:
     def __init__(self, spark_session, spark_context):

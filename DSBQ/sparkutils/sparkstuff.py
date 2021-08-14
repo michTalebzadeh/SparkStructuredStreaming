@@ -1,14 +1,16 @@
 import sys
+
 import pyspark
 from pyspark.sql import SparkSession
 from pyspark import SparkContext, SparkConf
 
+from DSBQ.src.configure import config
 from pyspark.sql import SQLContext, HiveContext
-from config import config
 
 def spark_session(appName):
   return SparkSession.builder \
     .appName(appName) \
+    .config('parenrProject',config['GCPVariables']['projectId']) \
     .enableHiveSupport() \
     .getOrCreate()
 
@@ -55,6 +57,7 @@ def setSparkConfBQ(spark):
     try:
         spark.conf.set("GcpJsonKeyFile", config['GCPVariables']['jsonKeyFile'])
         spark.conf.set("BigQueryProjectId", config['GCPVariables']['projectId'])
+        spark.conf.set("BigQueryParentProjectId", config['GCPVariables']['projectId'])
         spark.conf.set("BigQueryDatasetLocation", config['GCPVariables']['datasetLocation'])
         spark.conf.set("google.cloud.auth.service.account.enable", "true")
         spark.conf.set("fs.gs.project.id", config['GCPVariables']['projectId'])
@@ -106,6 +109,8 @@ def loadTableFromBQ(spark,dataset,tableName):
         read_df = spark.read. \
             format("bigquery"). \
             option("credentialsFile", config['GCPVariables']['jsonKeyFile']). \
+            option("project", config['GCPVariables']['projectId']). \
+            option("parentProject", config['GCPVariables']['projectId']). \
             option("dataset", dataset). \
             option("table", tableName). \
             load()
@@ -120,6 +125,8 @@ def writeTableToBQ(dataFrame,mode,dataset,tableName):
             write. \
             format("bigquery"). \
             option("credentialsFile", config['GCPVariables']['jsonKeyFile']). \
+            option("project", config['GCPVariables']['projectId']). \
+            option("parentProject", config['GCPVariables']['projectId']). \
             mode(mode). \
             option("dataset", dataset). \
             option("table", tableName). \

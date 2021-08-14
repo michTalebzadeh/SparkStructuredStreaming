@@ -1,0 +1,6 @@
+import yaml
+import sys
+import os
+config: dict = []
+hive_url = "jdbc:hive2://" +'rhes75' + ':' + '10099' + '/default'
+oracle_url = "jdbc:oracle:thin:@" + 'rhes76' + ":" + '1521' + ":" + 'mydb'
